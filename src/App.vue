@@ -1,12 +1,25 @@
 <template>
   <v-app>
     <v-navigation-drawer v-model="drawer" app>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="title"> Jawad Ali </v-list-item-title>
-          <v-list-item-subtitle> alijamil734@gmail.com </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
+      <v-list
+        style="
+          background-image: url(https://giventofly.github.io/pixelit/assets/px-normal.jpg);
+        "
+        dark
+      >
+        <v-list-item>
+          <v-list-item-avatar size="77">
+            <v-img src="@/assets/profile.jpg"></v-img>
+          </v-list-item-avatar>
+        </v-list-item>
+
+        <v-list-item link>
+          <v-list-item-content>
+            <v-list-item-title class="title"> Jawad Ali </v-list-item-title>
+            <v-list-item-subtitle>alijamil734@gmail.com</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
 
       <v-divider></v-divider>
 
@@ -28,7 +41,7 @@
       app
       color="primary"
       dark
-      src="https://picsum.photos/1920/1080?random"
+      src="@/assets/appbar-bg-img.jpg"
     >
       <template v-slot:img="{ props }">
         <v-img
@@ -37,26 +50,41 @@
         ></v-img>
       </template>
 
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      
-      <v-toolbar-title>
-        Todo Application
-        <div class="subtitle-1">{{date}}</div>
-      </v-toolbar-title>
+      <div class="w-100">
+        <div class="d-flex w-100">
+          <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-spacer></v-spacer>
+          <v-toolbar-title>
+          Todo Application
+          </v-toolbar-title>
 
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+          <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
+          <v-btn icon>
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
 
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+          <v-btn icon>
+            <v-icon>mdi-heart</v-icon>
+          </v-btn>
+
+          <v-btn icon>
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </div>
+        <div class="d-flex" style="width: 100%">
+          <v-text-field
+            class="pa-3"
+            outlined
+            hide-details=""
+            label="Add task"
+            append-icon="mdi-plus"
+            solo-inverted
+            full-width
+            clearable
+          />
+        </div>
+      </div>
     </v-app-bar>
 
     <v-main>
@@ -68,9 +96,10 @@
 <script>
 export default {
   name: "App",
+  computed: {
+  },
   data: () => ({
     drawer: true,
-    date: Date.now(),
     items: [
       {
         title: "Todo",
@@ -88,4 +117,7 @@ export default {
 </script>
 
 <style>
+.w-100 {
+  width: 100% !important;
+}
 </style>

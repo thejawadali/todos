@@ -1,16 +1,5 @@
 <template>
   <div>
-    <v-text-field
-      class="pa-3"
-      outlined
-      @click:append="addTask"
-      @keyup.enter="addTask"
-      hide-details=""
-      v-model="newTaskTitle"
-      label="Add task"
-      append-icon="mdi-plus"
-      clearable
-    ></v-text-field>
     <v-list v-if="tasks.length > 0" flat class="pt-0">
       <div v-for="task in tasks" :key="task.id">
         <v-list-item
@@ -29,9 +18,23 @@
               >
             </v-list-item-content>
             <v-list-item-action>
-              <v-btn icon @click.stop="deleteTask(task.id)">
-                <v-icon color="primary">mdi-delete</v-icon>
-              </v-btn>
+              <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn icon v-bind="attrs" v-on="on">
+                    <v-icon color="primary">mdi-dots-vertical</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-btn block flat>
+                        <v-icon left>{{ item.icon }}</v-icon>
+                        {{ item.title }}</v-btn
+                      >
+                    </v-list-item-content >
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </v-list-item-action>
           </template>
         </v-list-item>
@@ -95,7 +98,7 @@ export default {
         title: this.newTaskTitle,
         done: false,
       };
-      this.snackbar = true
+      this.snackbar = true;
       this.tasks.push(newTask);
       this.newTaskTitle = "";
     },
