@@ -28,6 +28,20 @@
                       <v-icon color="primary">mdi-dots-vertical</v-icon>
                     </v-btn>
                   </template>
+                  <v-list>
+                    <v-list-item-group>
+                      <v-list-item v-for="(item, i) in items" :key="i">
+                        <v-list-item-icon>
+                          <v-icon v-text="item.icon"></v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                          <v-list-item-title
+                            v-text="item.text"
+                          ></v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list-item-group>
+                  </v-list>
                 </v-menu>
               </v-list-item-action>
             </template>
@@ -50,14 +64,30 @@
 export default {
   data() {
     return {
+      items: [
+        {
+          icon: "mdi-pencil",
+          text: "Edit",
+        },
+        {
+          icon: "mdi-calendar",
+          text: "Due Date",
+        },
+        {
+          icon: "mdi-delete",
+          text: "Delete",
+        },
+        {
+          icon: "mdi-sort",
+          text: "Sort",
+        },
+      ],
+      // model: 0,
     };
   },
   methods: {
     doneTask(id) {
       this.$store.commit("tasksModule/doneTask", id);
-    },
-    deleteTask(id) {
-      this.tasks = this.tasks.filter((task) => task.id !== id);
     },
   },
 };
