@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-if="tasks.length > 0">
+    <div v-if="$store.state.tasksModule.tasks.length > 0">
       <v-list flat class="pt-0">
-        <div v-for="task in tasks" :key="task.id">
+        <div v-for="task in $store.state.tasksModule.tasks" :key="task.id">
           <v-list-item
             @click="doneTask(task.id)"
             :class="{ 'blue lighten-5': task.done }"
@@ -43,14 +43,6 @@
         </v-row>
       </v-container>
     </div>
-    <v-snackbar v-model="snackbar" timeout="1000" rounded="lg">
-      A New Task Added!
-      <template v-slot:action="{ attrs }">
-        <v-btn color="success" text v-bind="attrs" @click="snackbar = false">
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
   </div>
 </template>
 
@@ -58,44 +50,14 @@
 export default {
   data() {
     return {
-      snackbar: false,
-      newTaskTitle: "",
-      tasks: [
-        {
-          id: 1,
-          title: "Task 1",
-          done: false,
-        },
-        {
-          id: 2,
-          title: "Task 2",
-          done: false,
-        },
-        {
-          id: 3,
-          title: "Task 3",
-          done: false,
-        },
-      ],
     };
   },
   methods: {
     doneTask(id) {
-      const task = this.tasks.find((task) => task.id === id);
-      task.done = !task.done;
+      this.$store.commit("tasksModule/doneTask", id);
     },
     deleteTask(id) {
       this.tasks = this.tasks.filter((task) => task.id !== id);
-    },
-    addTask() {
-      const newTask = {
-        id: Date.now,
-        title: this.newTaskTitle,
-        done: false,
-      };
-      this.snackbar = true;
-      this.tasks.push(newTask);
-      this.newTaskTitle = "";
     },
   },
 };

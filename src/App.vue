@@ -54,9 +54,7 @@
         <div class="d-flex w-100">
           <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-          <v-toolbar-title>
-          Todo Application
-          </v-toolbar-title>
+          <v-toolbar-title> Todo Application </v-toolbar-title>
 
           <v-spacer></v-spacer>
 
@@ -80,7 +78,10 @@
             label="Add task"
             append-icon="mdi-plus"
             solo-inverted
+            v-model="newTaskTitle"
             full-width
+            @keyup.enter="addTask"
+            @click:append="addTask"
             clearable
           />
         </div>
@@ -89,6 +90,14 @@
 
     <v-main>
       <router-view></router-view>
+      <v-snackbar v-model="snackbar" timeout="1000" rounded="lg">
+        A New Task Added!
+        <template v-slot:action="{ attrs }">
+          <v-btn color="success" text v-bind="attrs" @click="snackbar = false">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
     </v-main>
   </v-app>
 </template>
@@ -96,10 +105,18 @@
 <script>
 export default {
   name: "App",
-  computed: {
+  computed: {},
+  methods: {
+    addTask() {
+      this.$store.commit("tasksModule/addTask", this.newTaskTitle);
+      this.snackbar = true;
+      this.newTaskTitle = "";
+    },
   },
   data: () => ({
     drawer: true,
+    snackbar: false,
+    newTaskTitle: "",
     items: [
       {
         title: "Todo",
