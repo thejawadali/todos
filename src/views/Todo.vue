@@ -9,11 +9,12 @@
       </v-list>
     </div>
     <div v-else>
-      <v-container fill-height fluid>
-        <v-row align="center" justify="center">
-          <v-col><h3>no tasks</h3></v-col>
-        </v-row>
-      </v-container>
+      <div
+        class="d-flex full-page w-100 d-flex justify-center align-center flex-column"
+      >
+        <v-icon color="cyan" large>mdi-check</v-icon>
+        <h2 class="cyan--text">no tasks</h2>
+      </div>
     </div>
   </div>
 </template>
@@ -22,7 +23,7 @@
 import listItem from "@/components/list-item";
 export default {
   components: {
-  listItem
+    listItem,
   },
   data() {
     return {};
@@ -32,4 +33,8 @@ export default {
 </script>
 
 <style>
+.full-page {
+  width: 100%;
+  height: calc(100vh - 200px);
+}
 </style>

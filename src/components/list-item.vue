@@ -23,7 +23,7 @@
           </template>
           <v-list>
             <v-list-item-group>
-              <v-list-item v-for="(item, i) in items" :key="i">
+              <v-list-item @click="item.cb(task.id)" v-for="(item, i) in items" :key="i">
                 <v-list-item-icon>
                   <v-icon v-text="item.icon"></v-icon>
                 </v-list-item-icon>
@@ -54,18 +54,30 @@ export default {
         {
           icon: "mdi-pencil",
           text: "Edit",
+          cb: (id) => {
+            console.log({Edit: id})
+          }
         },
         {
           icon: "mdi-calendar",
           text: "Due Date",
+          cb: (id) => {
+            console.log({Date: id})
+          }
         },
         {
           icon: "mdi-delete",
           text: "Delete",
+          cb: (id) => {
+            console.log({Delete: id})
+          }
         },
         {
           icon: "mdi-sort",
           text: "Sort",
+          cb: (id) => {
+            console.log({Sort: id})
+          }
         },
       ],
       // model: 0,
