@@ -156,13 +156,13 @@ export default {
             this.taskId = id;
           },
         },
-        {
-          icon: "mdi-sort",
-          text: "Sort",
-          cb: (id) => {
-            console.log({ Sort: id });
-          },
-        },
+        // {
+        //   icon: "mdi-sort",
+        //   text: "Sort",
+        //   cb: (id) => {
+        //     console.log({ Sort: id });
+        //   },
+        // },
       ],
       taskId: "",
     };
