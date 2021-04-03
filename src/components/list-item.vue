@@ -56,11 +56,15 @@
         </v-list-item-action>
       </template>
     </v-list-item>
-    <v-dialog v-model="dueDateDialog" max-width="300px">
+    <v-dialog
+      v-model="dueDateDialog"
+      max-width="300px"
+      transition="dialog-transition"
+    >
       <v-date-picker v-model="picker" no-title scrollable>
         <v-spacer></v-spacer>
-        <v-btn text color="error" @click="cancel(true)"> Cancel </v-btn>
-        <v-btn text color="success" @click="save(true)"> OK </v-btn>
+        <v-btn text color="error" @click="cancel('dueDate')"> Cancel </v-btn>
+        <v-btn text color="success" @click="save('dueDate')"> OK </v-btn>
       </v-date-picker>
     </v-dialog>
     <v-dialog
@@ -80,8 +84,25 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text color="error" @click="cancel(false)"> Cancel </v-btn>
-          <v-btn text color="success" @click="save(false)"> OK </v-btn>
+          <v-btn text color="error" @click="cancel('edit')"> Cancel </v-btn>
+          <v-btn text color="success" @click="save('edit')"> OK </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog
+      v-model="deleteDialog"
+      max-width="300px"
+      transition="dialog-transition"
+    >
+      <v-card>
+        <v-card-title> Delete Task? </v-card-title>
+        <v-card-text>
+          <p>Are you sure you want to delete that task?</p>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text color="error" @click="cancel('delete')"> Cancel </v-btn>
+          <v-btn text color="success" @click="save('delete')"> OK </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -101,6 +122,7 @@ export default {
     return {
       dueDateDialog: false,
       editDialog: false,
+      deleteDialog: false,
       newTitle: "",
       picker: new Date().toISOString().substr(0, 10),
       items: [
@@ -128,7 +150,10 @@ export default {
           icon: "mdi-delete",
           text: "Delete",
           cb: (id) => {
-            this.$store.commit("tasksModule/deleteTask", id);
+            // open confirmation dialog box
+            this.taskId = "";
+            this.deleteDialog = true;
+            this.taskId = id;
           },
         },
         {
@@ -146,27 +171,34 @@ export default {
     doneTask(id) {
       this.$store.commit("tasksModule/doneTask", id);
     },
-    save(isDate) {
-      if (isDate) {
+    save(type) {
+      if (type === "dueDate") {
         // save due date of task
         this.$store.commit("tasksModule/addDueDate", {
           taskId: this.taskId,
           dueDate: this.picker,
         });
         this.dueDateDialog = false;
-      } else {
+      } else if (type === "edit") {
         this.$store.commit("tasksModule/editTask", {
           taskId: this.taskId,
           title: this.newTitle,
         });
         this.editDialog = false;
+      } else {
+        // delete
+        this.$store.commit("tasksModule/deleteTask", this.taskId);
+        this.deleteDialog = false;
       }
     },
-    cancel(isDate) {
-      if (isDate) {
+    cancel(type) {
+      if (type === "dueDate") {
         this.dueDateDialog = false;
-      } else {
+      } else if (type === "edit") {
         this.editDialog = false;
+      } else {
+        // delete
+        this.deleteDialog = false;
       }
     },
   },
