@@ -1,4 +1,5 @@
 import chance from "chance";
+import dayjs from "dayjs";
 export default {
   namespaced: true,
   state: {
@@ -35,6 +36,10 @@ export default {
     },
     deleteTask(state, taskId) {
       state.tasks = state.tasks.filter((task) => task.id.toString() !== taskId);
+    },
+    addDueDate(state, { taskId, dueDate }) {
+      const task = state.tasks.find((task) => task.id === taskId);
+      task.dueDate = dayjs(dueDate).format("MMM DD");
     },
   },
 };
