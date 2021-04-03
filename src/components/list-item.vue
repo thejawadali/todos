@@ -56,12 +56,34 @@
         </v-list-item-action>
       </template>
     </v-list-item>
-    <v-dialog v-model="dialog" max-width="300px">
+    <v-dialog v-model="dueDateDialog" max-width="300px">
       <v-date-picker v-model="picker" no-title scrollable>
         <v-spacer></v-spacer>
-        <v-btn text color="error" @click="cancel = false"> Cancel </v-btn>
-        <v-btn text color="success" @click="save"> OK </v-btn>
+        <v-btn text color="error" @click="cancel(true)"> Cancel </v-btn>
+        <v-btn text color="success" @click="save(true)"> OK </v-btn>
       </v-date-picker>
+    </v-dialog>
+    <v-dialog
+      v-model="editDialog"
+      max-width="300px"
+      transition="dialog-transition"
+    >
+      <v-card>
+        <v-card-title> Edit Task </v-card-title>
+        <v-card-subtitle> Edit the title of task: </v-card-subtitle>
+        <v-card-text>
+          <v-text-field
+            v-model="newTitle"
+            label="Task Title"
+            required
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text color="error" @click="cancel(false)"> Cancel </v-btn>
+          <v-btn text color="success" @click="save(false)"> OK </v-btn>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
   </div>
 </template>
@@ -77,14 +99,19 @@ export default {
   },
   data() {
     return {
-      dialog: false,
+      dueDateDialog: false,
+      editDialog: false,
+      newTitle: "",
       picker: new Date().toISOString().substr(0, 10),
       items: [
         {
           icon: "mdi-pencil",
           text: "Edit",
           cb: (id) => {
-            console.log({ Edit: id });
+            // open edit dialog
+            this.taskId = "";
+            this.editDialog = true;
+            this.taskId = id;
           },
         },
         {
@@ -93,7 +120,7 @@ export default {
           cb: (id) => {
             // open date picker
             this.taskId = "";
-            this.dialog = true;
+            this.dueDateDialog = true;
             this.taskId = id;
           },
         },
@@ -119,21 +146,28 @@ export default {
     doneTask(id) {
       this.$store.commit("tasksModule/doneTask", id);
     },
-    save() {
-      // save due date of task
-      // console.log({
-      //   dayjs: dayjs(this.picker).toDate(),
-      //   nativeDate: dayjs().toDate(),
-      //   taskId: this.taskId,
-      // });
-      this.$store.commit("tasksModule/addDueDate", {
-        taskId: this.taskId,
-        dueDate: this.picker,
-      });
-      this.dialog = false;
+    save(isDate) {
+      if (isDate) {
+        // save due date of task
+        this.$store.commit("tasksModule/addDueDate", {
+          taskId: this.taskId,
+          dueDate: this.picker,
+        });
+        this.dueDateDialog = false;
+      } else {
+        this.$store.commit("tasksModule/editTask", {
+          taskId: this.taskId,
+          title: this.newTitle,
+        });
+        this.editDialog = false;
+      }
     },
-    cancel() {
-      this.dialog = false;
+    cancel(isDate) {
+      if (isDate) {
+        this.dueDateDialog = false;
+      } else {
+        this.editDialog = false;
+      }
     },
   },
 };

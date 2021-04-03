@@ -41,5 +41,9 @@ export default {
       const task = state.tasks.find((task) => task.id === taskId);
       task.dueDate = dayjs(dueDate).format("MMM DD");
     },
+    editTask(state, { taskId, title }) {
+      const task = state.tasks.find((task) => task.id === taskId);
+      task.title = title ? title : task.title;
+    },
   },
 };
