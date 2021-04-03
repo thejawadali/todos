@@ -103,12 +103,14 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "App",
   computed: {},
   methods: {
+    ...mapActions("tasksModule", ["createTask"]),
     addTask() {
-      this.$store.commit("tasksModule/addTask", this.newTaskTitle);
+      this.createTask(this.newTaskTitle);
       this.snackbar = true;
       this.newTaskTitle = "";
     },

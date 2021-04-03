@@ -190,7 +190,6 @@ export default {
       } else {
         // delete
         this.deleteTask(this.taskId);
-        // this.$store.commit("tasksModule/deleteTask", this.taskId);
         this.deleteDialog = false;
       }
     },
