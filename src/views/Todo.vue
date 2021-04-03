@@ -21,14 +21,20 @@
 
 <script>
 import listItem from "@/components/list-item";
+import { mapActions } from "vuex";
 export default {
   components: {
     listItem,
   },
+  mounted() {
+    this.loadTasks();
+  },
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    ...mapActions("tasksModule", ["loadTasks"]),
+  },
 };
 </script>
 
