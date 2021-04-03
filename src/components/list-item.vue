@@ -169,14 +169,14 @@ export default {
     };
   },
   methods: {
-    ...mapActions("tasksModule", ["deleteTask"]),
+    ...mapActions("tasksModule", ["deleteTask", "addDueDate"]),
     doneTask(id) {
       this.$store.commit("tasksModule/doneTask", id);
     },
     save(type) {
       if (type === "dueDate") {
         // save due date of task
-        this.$store.commit("tasksModule/addDueDate", {
+        this.addDueDate({
           taskId: this.taskId,
           dueDate: this.picker,
         });

@@ -76,5 +76,18 @@ export default {
         console.error(error);
       }
     },
+    async addDueDate(_, { taskId, dueDate }) {
+      try {
+        const resp = await axios.patch(
+          `http://localhost:3000/tasks/${taskId}`,
+          {
+            dueDate: dueDate,
+          }
+        );
+        console.log(resp);
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
 };
