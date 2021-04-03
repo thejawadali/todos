@@ -38,9 +38,6 @@ export default {
       };
       state.tasks.push(newTask);
     },
-    deleteTask(state, taskId) {
-      state.tasks = state.tasks.filter((task) => task.id.toString() !== taskId);
-    },
     addDueDate(state, { taskId, dueDate }) {
       const task = state.tasks.find((task) => task.id === taskId);
       task.dueDate = dueDate;
@@ -62,8 +59,31 @@ export default {
         });
         commit("setTasks", tasks);
       } catch (e) {
-        console.log(e);
+        console.error(e);
         commit("setTasks", []);
+      }
+    },
+    async doneTask(_, { taskId }) {
+      try {
+        const resp = await axios.patch(
+          `http://localhost:3000/tasks/${taskId}`,
+          {
+            done: true,
+          }
+        );
+        console.log(resp);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteTask(_, taskId) {
+      try {
+        const resp = await axios.delete(
+          `http://localhost:3000/tasks/${taskId}`
+        );
+        console.log(resp);
+      } catch (error) {
+        console.error(error);
       }
     },
   },

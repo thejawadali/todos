@@ -110,6 +110,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   props: {
     task: {
@@ -168,6 +169,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions("tasksModule", ["deleteTask"]),
     doneTask(id) {
       this.$store.commit("tasksModule/doneTask", id);
     },
@@ -187,7 +189,8 @@ export default {
         this.editDialog = false;
       } else {
         // delete
-        this.$store.commit("tasksModule/deleteTask", this.taskId);
+        this.deleteTask(this.taskId);
+        // this.$store.commit("tasksModule/deleteTask", this.taskId);
         this.deleteDialog = false;
       }
     },
