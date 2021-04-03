@@ -14,14 +14,6 @@ export default {
       const task = state.tasks.find((task) => task.id === taskId);
       task.done = !task.done;
     },
-    addDueDate(state, { taskId, dueDate }) {
-      const task = state.tasks.find((task) => task.id === taskId);
-      task.dueDate = dueDate;
-    },
-    editTask(state, { taskId, title }) {
-      const task = state.tasks.find((task) => task.id === taskId);
-      task.title = title ? title : task.title;
-    },
   },
   actions: {
     async createTask(_, taskTitle) {
@@ -82,6 +74,23 @@ export default {
           `http://localhost:3000/tasks/${taskId}`,
           {
             dueDate: dueDate,
+          }
+        );
+        console.log(resp);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async editTask(_, { taskId, taskTitle }) {
+      if (!taskTitle) {
+        console.error("Title to do bhai!");
+        return;
+      }
+      try {
+        const resp = await axios.patch(
+          `http://localhost:3000/tasks/${taskId}`,
+          {
+            title: taskTitle,
           }
         );
         console.log(resp);

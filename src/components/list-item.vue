@@ -169,7 +169,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("tasksModule", ["deleteTask", "addDueDate"]),
+    ...mapActions("tasksModule", ["deleteTask", "addDueDate", "editTask"]),
     doneTask(id) {
       this.$store.commit("tasksModule/doneTask", id);
     },
@@ -182,9 +182,9 @@ export default {
         });
         this.dueDateDialog = false;
       } else if (type === "edit") {
-        this.$store.commit("tasksModule/editTask", {
+        this.editTask({
           taskId: this.taskId,
-          title: this.newTitle,
+          taskTitle: this.newTitle,
         });
         this.editDialog = false;
       } else {
